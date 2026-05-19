@@ -1,3 +1,4 @@
+from reports.validation_summary import create_validation_summary, save_validation_summary
 from extract.read_file import read_excel_file
 from transform.clean_columns import clean_column_names
 from validate.check_duplicates import find_duplicates
@@ -33,7 +34,18 @@ def main():
                 ["vbeln", "posnr", "fkimg", "vrkme", "meins"]
             ].head()
         )
+    summary_df = create_validation_summary(
+        total_rows=len(df),
+        duplicate_count=len(duplicates),
+        missing_count=len(missing_values)
+    )
 
+    save_validation_summary(
+        summary_df,
+        "reports/validation_summary.csv"
+    )
+
+    print("\nValidation summary saved to reports/validation_summary.csv")
 
 if __name__ == "__main__":
     main()
