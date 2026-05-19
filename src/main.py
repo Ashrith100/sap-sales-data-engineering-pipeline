@@ -7,13 +7,13 @@ from extract.read_file import read_excel_file
 from transform.clean_columns import clean_column_names
 from validate.check_duplicates import find_duplicates
 from validate.check_missing_values import find_missing_required_values
+from validate.check_business_rules import find_invalid_business_values
 from load.load_to_sqlite import load_dataframe_to_sqlite
 from export.export_clean_data import export_clean_data
 from utils.logger import setup_logger
 
 
 def main():
-
     logger = setup_logger()
 
     logger.info("Pipeline started")
@@ -50,6 +50,19 @@ def main():
         print(
             missing_values[
                 ["vbeln", "posnr", "fkimg", "vrkme", "meins"]
+            ].head()
+        )
+
+    invalid_business_values = find_invalid_business_values(df)
+
+    logger.info(f"Invalid business value records: {len(invalid_business_values)}")
+
+    print(f"\nInvalid Business Value Records: {len(invalid_business_values)}")
+
+    if not invalid_business_values.empty:
+        print(
+            invalid_business_values[
+                ["vbeln", "posnr", "fkimg"]
             ].head()
         )
 
