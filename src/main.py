@@ -3,6 +3,8 @@ from extract.read_file import read_excel_file
 from transform.clean_columns import clean_column_names
 from validate.check_duplicates import find_duplicates
 from validate.check_missing_values import find_missing_required_values
+from load.load_to_sqlite import load_dataframe_to_sqlite
+from export.export_clean_data import export_clean_data
 
 
 def main():
@@ -47,5 +49,14 @@ def main():
 
     print("\nValidation summary saved to reports/validation_summary.csv")
 
+    load_dataframe_to_sqlite(
+        df=df,
+        database_name="sap_sales.db",
+        table_name="billing_items"
+    )
+    export_clean_data(
+        df=df,
+        output_path="data/processed/clean_vbrp.csv"
+    )
 if __name__ == "__main__":
     main()
