@@ -11,6 +11,7 @@ from validate.check_business_rules import find_invalid_business_values
 from load.load_to_sqlite import load_dataframe_to_sqlite
 from export.export_clean_data import export_clean_data
 from utils.logger import setup_logger
+from load.load_to_postgres import load_dataframe_to_postgres
 
 
 def main():
@@ -98,6 +99,13 @@ def main():
 
     logger.info("Pipeline completed successfully")
 
+    load_dataframe_to_postgres(
+        df=df,
+        database_name="sap_sales",
+        table_name="billing_items"
+    )
+
+    logger.info("PostgreSQL load completed")
 
 if __name__ == "__main__":
     main()
